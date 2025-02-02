@@ -6,6 +6,8 @@ namespace PrioQ.Domain.Entities
     {
         public Guid Id { get; }
         public int Priority { get; set; }
+
+        public long InsertionOrder { get; set; }
         public string Command { get; set; }
         public DateTime EnqueuedAt { get; set; }
 

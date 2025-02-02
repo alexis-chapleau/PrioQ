@@ -48,7 +48,9 @@ namespace PrioQ.Tests.UnitTests
             var config = CreateBoundedConfig(maxPriority: 10);
             var mockRepo = new Mock<IQueueRepository>();
             // Return a fake queue so that Enqueue is called on a valid instance.
-            mockRepo.Setup(r => r.GetQueue()).Returns(new MockPriorityQueue());
+            var mockQueue = new MockPriorityQueue();
+            mockQueue.MaxPriority = 10;
+            mockRepo.Setup(r => r.GetQueue()).Returns(mockQueue);
             var useCase = new EnqueueCommandUseCase(config, mockRepo.Object);
             var item = new PriorityQueueItem(11, "Test Command");
 
@@ -79,6 +81,7 @@ namespace PrioQ.Tests.UnitTests
             // Arrange
             var config = CreateBoundedConfig(maxPriority: 10);
             var mockQueue = new MockPriorityQueue();
+            mockQueue.MaxPriority = 10;
             var mockRepo = new Mock<IQueueRepository>();
             mockRepo.Setup(r => r.GetQueue()).Returns(mockQueue);
             var useCase = new EnqueueCommandUseCase(config, mockRepo.Object);
@@ -95,6 +98,7 @@ namespace PrioQ.Tests.UnitTests
             // Arrange
             var config = CreateUnboundedConfig();
             var mockQueue = new MockPriorityQueue();
+            mockQueue.UnboundedPriority = true;
             var mockRepo = new Mock<IQueueRepository>();
             mockRepo.Setup(r => r.GetQueue()).Returns(mockQueue);
             var useCase = new EnqueueCommandUseCase(config, mockRepo.Object);

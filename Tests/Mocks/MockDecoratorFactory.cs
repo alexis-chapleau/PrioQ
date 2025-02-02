@@ -1,5 +1,5 @@
 ﻿using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Infrastructure.Factories;
 using PrioQ.Tests.Mocks;
 
@@ -26,7 +26,7 @@ namespace PrioQ.Tests.Mocks
             return _shouldApply;
         }
 
-        public IPriorityQueue Apply(IPriorityQueue queue)
+        public BasePriorityQueue Apply(BasePriorityQueue queue)
         {
             return new MockDecorator(queue);
         }

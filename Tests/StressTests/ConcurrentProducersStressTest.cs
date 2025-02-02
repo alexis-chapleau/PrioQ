@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PrioQ.Tests.StressTests
 {
@@ -12,8 +13,13 @@ namespace PrioQ.Tests.StressTests
     {
         private readonly HttpClient _client;
 
-        public ConcurrentProducersAndConsumersStressTest(WebApplicationFactory<Program> factory)
+        public ConcurrentProducersAndConsumersStressTest()
         {
+            var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Testing");
+            });
             _client = factory.CreateClient();
         }
 

@@ -4,21 +4,19 @@
 }
 <h2>Enqueue Command</h2>
 
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-success">@TempData["Message"]</div>
-}
 
 <form asp-action="Enqueue" method="post">
     <div>
-        <label asp-for="Priority"></label>
-        <input asp-for="Priority" type="number" />
-        <span asp-validation-for="Priority" class="text-danger"></span>
+        <label>Priority:</label>
+        <input type="number"
+               name="Priority"
+               value="" @Model.Priority />
     </div>
     <div>
-        <label asp-for="CommandText"></label>
-        <input asp-for="CommandText" type="text" />
-        <span asp-validation-for="CommandText" class="text-danger"></span>
+        <label>Command:</label>
+        <input type="text"
+               name="CommandText"
+               value="" @Model.CommandText />
     </div>
     <button type="submit">Enqueue Command</button>
 </form>

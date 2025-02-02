@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PrioQ.Tests.EndToEndTests
 {
@@ -10,8 +11,13 @@ namespace PrioQ.Tests.EndToEndTests
     {
         private readonly HttpClient _client;
 
-        public UserWorkflowTests(WebApplicationFactory<Program> factory)
+        public UserWorkflowTests()
         {
+            var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Testing");
+            });
             _client = factory.CreateClient();
         }
 

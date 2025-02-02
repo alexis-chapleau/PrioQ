@@ -72,7 +72,7 @@ namespace Tests.UnitTests.Decorators
             var mockQueue = new MockPriorityQueue();
             var decorator = new LoggingDecorator(mockQueue, testLogger);
             var item = new PriorityQueueItem(1, "Test");
-            mockQueue.Enqueue(item);
+            decorator.Enqueue(item);
 
             // Act
             var dequeued = decorator.Dequeue();

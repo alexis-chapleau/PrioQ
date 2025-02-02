@@ -7,12 +7,12 @@ namespace PrioQ.Application.UseCases
     public class InitializeQueueUseCase : IInitializeQueueUseCase
     {
         private readonly IQueueRepository _queueRepository;
-        private readonly IPriorityQueueFactory _queueFactory;
+        private readonly BasePriorityQueueFactory _queueFactory;
         private readonly QueueConfig _config;
 
         public InitializeQueueUseCase(
             IQueueRepository queueRepository,
-            IPriorityQueueFactory queueFactory,
+            BasePriorityQueueFactory queueFactory,
             QueueConfig config)
         {
             _queueRepository = queueRepository;

@@ -1,39 +1,68 @@
 @model PrioQ.UI.Models.SetupViewModel
 
-<h2>Queue Setup Wizard</h2>
-<form asp-action="Index" method="post">
+<h2>Queue Setup Wizard (Plain HTML)</h2>
+
+
+<form action="/Setup/Index" method="post">
+    <!-- For checkboxes, we must handle them carefully:
+         If we want to send 'true' or 'false' for the property, we do this pattern: -->
     <div>
         <label>Unbounded Priority:</label>
-        <input asp-for="UnboundedPriority" type="checkbox" />
+        <input type="checkbox"
+               name="UnboundedPriority"
+               value="false"
+        @(Model.UnboundedPriority ? "checked" : "") />
     </div>
+
     <div>
         <label>Max Priority:</label>
-        <input asp-for="MaxPriority" type="number" />
+        <input type="number"
+               name="MaxPriority"
+               value="@Model.MaxPriority" />
     </div>
+
     <div>
         <label>Algorithm:</label>
-        <select asp-for="Algorithm">
-            <option>NormalBuckets</option>
-            <option>Bitmask</option>
-            <option>DoubleBitmask</option>
-            <option>Heap</option>
+        <select name="Algorithm">
+            <!-- Manually set "selected" if this matches Model.Algorithm -->
+            <option value="NormalBuckets" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.NormalBuckets ? "selected" : "")>NormalBuckets</option>
+            <option value="Bitmask" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.Bitmask ? "selected" : "")>Bitmask</option>
+            <option value="DoubleBitmask" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.DoubleBitmask ? "selected" : "")>DoubleBitmask</option>
+            <option value="Heap" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.Heap ? "selected" : "")>Heap</option>
         </select>
     </div>
+
     <div>
         <label>Use Logging:</label>
-        <input asp-for="UseLogging" type="checkbox" />
+        <input type="checkbox"
+               name="UseLogging"
+               value="true"
+        @(Model.UseLogging ? "checked" : "") />
     </div>
+
     <div>
         <label>Use Locking:</label>
-        <input asp-for="UseLocking" type="checkbox" />
+        <input type="checkbox"
+               name="UseLocking"
+               value="true"
+        @(Model.UseLocking ? "checked" : "") />
     </div>
+
     <div>
         <label>Use Lazy Delete:</label>
-        <input asp-for="UseLazyDelete" type="checkbox" />
+        <input type="checkbox"
+               name="UseLazyDelete"
+               value="true"
+        @(Model.UseLazyDelete ? "checked" : "") />
     </div>
+
     <div>
         <label>Use Analytics:</label>
-        <input asp-for="UseAnalytics" type="checkbox" />
+        <input type="checkbox"
+               name="UseAnalytics"
+               value="true"
+        @(Model.UseAnalytics ? "checked" : "") />
     </div>
+
     <button type="submit">Create Queue</button>
 </form>

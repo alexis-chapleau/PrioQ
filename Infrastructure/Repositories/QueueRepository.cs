@@ -1,14 +1,15 @@
 ﻿using PrioQ.Application.Interfaces;
-using PrioQ.Domain.Interfaces;
+using PrioQ.Domain.Entities;
+
 
 namespace PrioQ.Infrastructure.Repository
 {
     public class QueueRepository : IQueueRepository
     {
-        private IPriorityQueue _queue;
+        private BasePriorityQueue _queue;
         private readonly object _lockObj = new object();
 
-        public IPriorityQueue GetQueue()
+        public BasePriorityQueue GetQueue()
         {
             lock (_lockObj)
             {
@@ -16,7 +17,7 @@ namespace PrioQ.Infrastructure.Repository
             }
         }
 
-        public void SetQueue(IPriorityQueue queue)
+        public void SetQueue(BasePriorityQueue queue)
         {
             lock (_lockObj)
             {

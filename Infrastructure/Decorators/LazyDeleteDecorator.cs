@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 
 namespace PrioQ.Infrastructure.Decorators
 {
-    public class LazyDeleteDecorator : IPriorityQueue
+    public class LazyDeleteDecorator : BasePriorityQueue
     {
-        private readonly IPriorityQueue _innerQueue;
+        private readonly BasePriorityQueue _innerQueue;
         private readonly HashSet<Guid> _toDelete;
 
-        public LazyDeleteDecorator(IPriorityQueue innerQueue)
+        public LazyDeleteDecorator(BasePriorityQueue innerQueue)
         {
             _innerQueue = innerQueue;
             _toDelete = new HashSet<Guid>();
         }
 
-        public void Enqueue(PriorityQueueItem item)
+        public override void Enqueue(PriorityQueueItem item)
         {
             _innerQueue.Enqueue(item);
         }
 
-        public PriorityQueueItem Dequeue()
+        public override PriorityQueueItem Dequeue()
         {
             while (true)
             {

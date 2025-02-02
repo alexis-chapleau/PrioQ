@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Numerics;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 
 namespace PrioQ.Infrastructure.PriorityQueues
 {
-    public class BitmaskPriorityQueue : IPriorityQueue
+    public class BitmaskPriorityQueue : BasePriorityQueue
     {
         // Supports priorities 1 to 64 (offset: index 0 to 63).
         private readonly Queue<PriorityQueueItem>[] _buckets;
@@ -18,7 +18,7 @@ namespace PrioQ.Infrastructure.PriorityQueues
             _activeBuckets = 0;
         }
 
-        public void Enqueue(PriorityQueueItem item)
+        public override void Enqueue(PriorityQueueItem item)
         {
             // Adjust for offset: valid priorities are 1...64, so index = priority - 1.
             int index = item.Priority - 1;
@@ -33,7 +33,7 @@ namespace PrioQ.Infrastructure.PriorityQueues
             _activeBuckets |= 1L << index;
         }
 
-        public PriorityQueueItem Dequeue()
+        public override PriorityQueueItem Dequeue()
         {
             if (_activeBuckets == 0)
                 return null;

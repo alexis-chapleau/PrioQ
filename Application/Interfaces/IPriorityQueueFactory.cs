@@ -1,7 +1,6 @@
 ﻿using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
 
-public interface IPriorityQueueFactory
+public interface BasePriorityQueueFactory
 {
-    IPriorityQueue CreatePriorityQueue(QueueConfig config);
+    BasePriorityQueue CreatePriorityQueue(QueueConfig config);
 }

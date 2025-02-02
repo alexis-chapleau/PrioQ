@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PrioQ.Application.Interfaces;
 using PrioQ.Domain.Entities;
-using PrioQ.Application.Interfaces; // If you have IConfigProvider in a shared or Application project; otherwise adjust the namespace.
-using PrioQ.Infrastructure.Configuration;
+using PrioQ.Infrastructure.Configuration; // or your correct namespace
 using PrioQ.UI.Models;
-using System;
 
 namespace PrioQ.UI.Controllers
 {
     public class SetupController : Controller
     {
-        private readonly IInitializeQueueUseCase _initializeQueueUseCase;
         private readonly IConfigProvider _configProvider;
+        private readonly IInitializeQueueUseCase _initializeQueueUseCase;
 
         public SetupController(IInitializeQueueUseCase initializeQueueUseCase, IConfigProvider configProvider)
         {
@@ -21,44 +20,43 @@ namespace PrioQ.UI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            // Get the default configuration (from config.json)
-            QueueConfig defaultConfig = _configProvider.GetQueueConfig();
+            // Read default config from config.json
+            var defaultConfig = _configProvider.GetQueueConfig();
 
-            // Populate the SetupViewModel with default values.
+            // Map it to SetupViewModel
             var model = new SetupViewModel
             {
                 UnboundedPriority = defaultConfig.UnboundedPriority,
                 MaxPriority = defaultConfig.MaxPriority,
-                Algorithm = defaultConfig.Algorithm.ToString(),  // Convert enum to string
+                Algorithm = defaultConfig.Algorithm, // if using an enum
                 UseLogging = defaultConfig.UseLogging,
                 UseLocking = defaultConfig.UseLocking,
                 UseLazyDelete = defaultConfig.UseLazyDelete,
                 UseAnalytics = defaultConfig.UseAnalytics
             };
 
+            // Return the normal HTML form (Views/Setup/Index.cshtml)
             return View(model);
         }
 
         [HttpPost]
         public IActionResult Index(SetupViewModel model)
         {
-            // Create a QueueConfig from the submitted model.
+            // Reconstruct a new QueueConfig
             var config = new QueueConfig
             {
                 UnboundedPriority = model.UnboundedPriority,
                 MaxPriority = model.MaxPriority,
+                Algorithm = model.Algorithm,
                 UseLogging = model.UseLogging,
                 UseLocking = model.UseLocking,
                 UseLazyDelete = model.UseLazyDelete,
-                UseAnalytics = model.UseAnalytics,
-                Algorithm = Enum.TryParse<PrioQ.Domain.Entities.PriorityQueueAlgorithm>(model.Algorithm, out var alg)
-                            ? alg : PrioQ.Domain.Entities.PriorityQueueAlgorithm.Heap
+                UseAnalytics = model.UseAnalytics
             };
-
-            // Initialize the queue using your use case.
             _initializeQueueUseCase.Execute(config);
 
-            TempData["Message"] = "Queue created successfully.";
+            TempData["Message"] = "Queue created successfully with your normal HTML form!";
+            // Redirect or return view as needed
             return RedirectToAction("Index", "Dashboard");
         }
     }

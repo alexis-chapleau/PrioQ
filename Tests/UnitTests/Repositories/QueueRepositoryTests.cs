@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Xunit;
 using PrioQ.Application.Interfaces;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Infrastructure.Repository;
 using PrioQ.Domain.Entities;
 
@@ -10,12 +10,12 @@ namespace Tests.UnitTests.Repositories
     public class QueueRepositoryTests
     {
         /// <summary>
-        /// A simple dummy implementation of IPriorityQueue for testing purposes.
+        /// A simple dummy implementation of BasePriorityQueue for testing purposes.
         /// </summary>
-        private class DummyQueue : IPriorityQueue
+        private class DummyQueue : BasePriorityQueue
         {
-            public void Enqueue(PriorityQueueItem item) { }
-            public PriorityQueueItem Dequeue() => null;
+            public override void Enqueue(PriorityQueueItem item) { }
+            public override PriorityQueueItem Dequeue() => null;
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Tests.UnitTests.Repositories
         {
             // Arrange
             var repository = new QueueRepository();
-            IPriorityQueue dummyQueue = new DummyQueue();
+            BasePriorityQueue dummyQueue = new DummyQueue();
 
             // Act
             repository.SetQueue(dummyQueue);
@@ -52,8 +52,8 @@ namespace Tests.UnitTests.Repositories
         {
             // Arrange
             var repository = new QueueRepository();
-            IPriorityQueue dummyQueue1 = new DummyQueue();
-            IPriorityQueue dummyQueue2 = new DummyQueue();
+            BasePriorityQueue dummyQueue1 = new DummyQueue();
+            BasePriorityQueue dummyQueue2 = new DummyQueue();
 
             // Act: Perform multiple concurrent operations.
             var tasks = new Task[100];

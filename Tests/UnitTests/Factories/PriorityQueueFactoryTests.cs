@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xunit;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Infrastructure.Factories;
 using PrioQ.Infrastructure.PriorityQueues;
 
@@ -30,7 +30,7 @@ namespace PrioQ.Tests.UnitTests
             var factory = new PriorityQueueFactory(decoratorFactories);
 
             // Act
-            IPriorityQueue queue = factory.CreatePriorityQueue(config);
+            BasePriorityQueue queue = factory.CreatePriorityQueue(config);
 
             // Assert
             Assert.IsType<HeapPriorityQueue>(queue);
@@ -56,7 +56,7 @@ namespace PrioQ.Tests.UnitTests
             var factory = new PriorityQueueFactory(decoratorFactories);
 
             // Act
-            IPriorityQueue queue = factory.CreatePriorityQueue(config);
+            BasePriorityQueue queue = factory.CreatePriorityQueue(config);
 
             // Assert
             Assert.IsType<BitmaskPriorityQueue>(queue);

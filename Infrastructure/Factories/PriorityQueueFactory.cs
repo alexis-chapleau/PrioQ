@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
 using PrioQ.Infrastructure.PriorityQueues;
-using PrioQ.Infrastructure.Decorators;
+
 
 namespace PrioQ.Infrastructure.Factories
 {
-    public class PriorityQueueFactory : IPriorityQueueFactory
+    public class PriorityQueueFactory : BasePriorityQueueFactory
     {
         private readonly IEnumerable<IPriorityQueueDecoratorFactory> _decoratorFactories;
 
@@ -15,9 +14,9 @@ namespace PrioQ.Infrastructure.Factories
             _decoratorFactories = decoratorFactories;
         }
 
-        public IPriorityQueue CreatePriorityQueue(QueueConfig config)
+        public BasePriorityQueue CreatePriorityQueue(QueueConfig config)
         {
-            IPriorityQueue queue;
+            BasePriorityQueue queue;
 
             // If the queue is unbounded, we fall back to the heap.
             if (config.UnboundedPriority)
@@ -61,6 +60,15 @@ namespace PrioQ.Infrastructure.Factories
                 if (decoratorFactory.ShouldApply(config))
                     queue = decoratorFactory.Apply(queue);
             }
+
+            // Map all attributes of the config object to the queue.
+            queue.UseLogging = config.UseLogging;
+            queue.UseLocking = config.UseLocking;
+            queue.UseLazyDelete = config.UseLazyDelete;
+            queue.UseAnalytics = config.UseAnalytics;
+            queue.MaxPriority = config.MaxPriority;
+            queue.Algorithm = config.Algorithm;
+            queue.UnboundedPriority = config.UnboundedPriority;
 
             return queue;
         }

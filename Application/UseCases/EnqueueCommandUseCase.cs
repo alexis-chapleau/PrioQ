@@ -17,14 +17,14 @@ namespace PrioQ.Application.UseCases
 
         public void Execute(PriorityQueueItem item)
         {
-            if (!_config.UnboundedPriority)
+            var queue = _queueRepository.GetQueue();
+            if (!queue.UnboundedPriority)
             {
-                if (item.Priority < 1 || item.Priority > _config.MaxPriority)
+                if (item.Priority < 1 || item.Priority > queue.MaxPriority)
                 {
-                    throw new PriorityOutOfRangeException(item.Priority, _config.MaxPriority);
+                    throw new PriorityOutOfRangeException(item.Priority, queue.MaxPriority);
                 }
             }
-            var queue = _queueRepository.GetQueue();
             queue.Enqueue(item);
         }
     }

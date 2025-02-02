@@ -1,6 +1,6 @@
 ﻿using PrioQ.Application.Interfaces;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Infrastructure.Analytics;
 using PrioQ.Infrastructure.Decorators;
 
@@ -17,7 +17,7 @@ namespace PrioQ.Infrastructure.Factories
 
         public bool ShouldApply(QueueConfig config) => config.UseAnalytics;
 
-        public IPriorityQueue Apply(IPriorityQueue queue)
+        public BasePriorityQueue Apply(BasePriorityQueue queue)
         {
             return new AnalyticsDecorator(queue, _collector);
         }

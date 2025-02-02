@@ -1,5 +1,5 @@
 ﻿using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Infrastructure.Decorators;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +16,7 @@ namespace PrioQ.Infrastructure.Factories
 
         public bool ShouldApply(QueueConfig config) => config.UseLogging;
 
-        public IPriorityQueue Apply(IPriorityQueue queue)
+        public BasePriorityQueue Apply(BasePriorityQueue queue)
         {
             return new LoggingDecorator(queue, _logger);
         }

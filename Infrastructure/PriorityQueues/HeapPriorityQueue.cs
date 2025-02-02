@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 
 namespace PrioQ.Infrastructure.PriorityQueues
 {
-    public class HeapPriorityQueue : IPriorityQueue
+    public class HeapPriorityQueue : BasePriorityQueue
     {
         private readonly List<PriorityQueueItem> _heap;
 
@@ -13,13 +13,13 @@ namespace PrioQ.Infrastructure.PriorityQueues
             _heap = new List<PriorityQueueItem>();
         }
 
-        public void Enqueue(PriorityQueueItem item)
+        public override void Enqueue(PriorityQueueItem item)
         {
             _heap.Add(item);
             HeapifyUp(_heap.Count - 1);
         }
 
-        public PriorityQueueItem Dequeue()
+        public override PriorityQueueItem Dequeue()
         {
             if (_heap.Count == 0)
                 return null;

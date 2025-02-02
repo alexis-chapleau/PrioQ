@@ -1,22 +1,22 @@
 ﻿using System.Collections.Generic;
 using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 
 namespace PrioQ.Tests.Mocks
 {
     /// <summary>
-    /// A simple mock implementation of IPriorityQueue for testing purposes.
+    /// A simple mock implementation of BasePriorityQueue for testing purposes.
     /// </summary>
-    public class MockPriorityQueue : IPriorityQueue
+    public class MockPriorityQueue : BasePriorityQueue
     {
         private readonly Queue<PriorityQueueItem> _queue = new Queue<PriorityQueueItem>();
 
-        public void Enqueue(PriorityQueueItem item)
+        public override void Enqueue(PriorityQueueItem item)
         {
             _queue.Enqueue(item);
         }
 
-        public PriorityQueueItem Dequeue()
+        public override PriorityQueueItem Dequeue()
         {
             return _queue.Count > 0 ? _queue.Dequeue() : null;
         }

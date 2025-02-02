@@ -3,7 +3,7 @@ using Xunit;
 using PrioQ.Domain.Entities;
 using PrioQ.Infrastructure.Analytics;
 using PrioQ.Infrastructure.Decorators;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Application.Interfaces;
 using PrioQ.Tests.Mocks;
 

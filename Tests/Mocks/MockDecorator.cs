@@ -1,27 +1,27 @@
 ﻿using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 
 namespace PrioQ.Tests.Mocks
 {
     /// <summary>
-    /// A simple mock decorator that wraps an inner IPriorityQueue.
+    /// A simple mock decorator that wraps an inner BasePriorityQueue.
     /// Exposes the inner queue via the InnerQueue property for testing purposes.
     /// </summary>
-    public class MockDecorator : IPriorityQueue
+    public class MockDecorator : BasePriorityQueue
     {
-        public IPriorityQueue InnerQueue { get; }
+        public BasePriorityQueue InnerQueue { get; }
 
-        public MockDecorator(IPriorityQueue innerQueue)
+        public MockDecorator(BasePriorityQueue innerQueue)
         {
             InnerQueue = innerQueue;
         }
 
-        public void Enqueue(PriorityQueueItem item)
+        public override void Enqueue(PriorityQueueItem item)
         {
             InnerQueue.Enqueue(item);
         }
 
-        public PriorityQueueItem Dequeue()
+        public override PriorityQueueItem Dequeue()
         {
             return InnerQueue.Dequeue();
         }

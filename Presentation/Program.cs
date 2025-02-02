@@ -49,7 +49,7 @@ services.AddTransient<IPriorityQueueDecoratorFactory, LockingDecoratorFactory>()
 services.AddTransient<IPriorityQueueDecoratorFactory, LazyDeleteDecoratorFactory>();
 
 // Register the PriorityQueueFactory.
-services.AddSingleton<IPriorityQueueFactory, PriorityQueueFactory>();
+services.AddSingleton<BasePriorityQueueFactory, PriorityQueueFactory>();
 
 // Register use cases.
 services.AddTransient<IEnqueueCommandUseCase, EnqueueCommandUseCase>();
@@ -58,7 +58,6 @@ services.AddTransient<IInitializeQueueUseCase, InitializeQueueUseCase>();
 services.AddTransient<IGetAnalyticsReportUseCase, GetAnalyticsReportUseCase>();
 
 // Register controllers with views and add the global exception filter.
-services.AddControllers();
 services.AddControllersWithViews(options =>
 {
     options.Filters.Add<DomainExceptionFilter>();
@@ -66,21 +65,24 @@ services.AddControllersWithViews(options =>
 
 var app = builder.Build();
 
- using (var scope = app.Services.CreateScope())
+// Conditionally create the queue only if we are in "Testing" environment.
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    using (var scope = app.Services.CreateScope())
     {
         var provider = scope.ServiceProvider;
         var configProvider = provider.GetRequiredService<IConfigProvider>();
         QueueConfig config = configProvider.GetQueueConfig();
-        var factory = provider.GetRequiredService<IPriorityQueueFactory>();
+        var factory = provider.GetRequiredService<BasePriorityQueueFactory>();
         var queue = factory.CreatePriorityQueue(config);
         var repo = provider.GetRequiredService<IQueueRepository>();
         repo.SetQueue(queue);
+        Console.WriteLine("Queue created automatically in Testing environment.");
     }
-
+}
 
 app.UseRouting();
-app.MapControllers();
-// Map default route so that the default controller is Setup (for the setup wizard) and action is Index.
+app.MapControllers();  // For attribute-routed controllers, if needed
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Setup}/{action=Index}/{id?}");

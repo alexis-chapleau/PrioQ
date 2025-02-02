@@ -1,5 +1,5 @@
 ﻿using PrioQ.Domain.Entities;
-using PrioQ.Domain.Interfaces;
+
 using PrioQ.Infrastructure.Decorators;
 
 namespace PrioQ.Infrastructure.Factories
@@ -8,7 +8,7 @@ namespace PrioQ.Infrastructure.Factories
     {
         public bool ShouldApply(QueueConfig config) => config.UseLazyDelete;
 
-        public IPriorityQueue Apply(IPriorityQueue queue)
+        public BasePriorityQueue Apply(BasePriorityQueue queue)
         {
             return new LazyDeleteDecorator(queue);
         }

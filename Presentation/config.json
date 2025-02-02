@@ -3,7 +3,7 @@
     "MaxPriority": 10,
     "UseLogging": true,
     "UseLocking": true,
-    "UseLazyDelete": false,
+    "UseLazyDelete": true,
     "UseAnalytics": true,
     "Algorithm": "Bitmask"
 }

@@ -1,43 +1,57 @@
 # PrioQ
-PrioQ – A Modular, Extensible Priority Queue System
-PrioQ is a powerful, in‑memory priority queue service built on .NET. It supports multiple queue algorithms (e.g., heap, buckets, bitmask) with a decorator architecture for advanced features such as logging, locking, lazy deletion, and analytics. Through clean, layered design, PrioQ remains both testable and extensible—you can easily add new behaviors or algorithms to meet your production needs.
 
-Key Features
-Multiple Algorithms:
+**PrioQ** is a modular, extensible, in‑memory priority queue system built on .NET. It supports multiple queue algorithms (e.g., heap, bucket, bitmask) via a **decorator architecture** that seamlessly adds advanced features such as logging, locking, lazy deletion, and analytics. Thanks to its clean, layered design, PrioQ remains both **testable** and **extensible**, letting you easily add new behaviors or algorithms to meet production needs.
 
-HeapPriorityQueue – A traditional binary heap-based priority queue with O(log n) enqueue/dequeue.
-BucketPriorityQueue – Bucket-based approach, suitable for limited priority ranges.
-BitmaskPriorityQueue – Single-level bitmask (up to 64 priorities), offering O(1) operations.
-DoubleLevelBitmaskPriorityQueue – For larger priority ranges (up to 256 priorities), also O(1) operations.
-Decorator Architecture:
-Add cross-cutting features by layering decorators:
+---
 
-Logging – Logs each enqueue/dequeue.
-Locking – Provides thread safety via locking.
-Lazy Deletion – Marks items for removal before discarding them.
-Analytics – Records analytics data for reporting.
-Configurable at Runtime:
+## Key Features
 
-JSON Configuration – A config.json file or a custom IConfigProvider can specify whether you use unbounded vs. bounded priorities, which algorithm to select, and whether to apply decorators.
-Clean Architecture:
+1. **Multiple Algorithms**  
+   - **HeapPriorityQueue** – Traditional binary heap (O(log n) for enqueue/dequeue).  
+   - **BucketPriorityQueue** – Bucket-based approach, suitable for limited priority ranges.  
+   - **BitmaskPriorityQueue** – Single-level bitmask (up to 64 priorities), offering O(1) operations.  
+   - **DoubleLevelBitmaskPriorityQueue** – For larger priority ranges (up to 256), also O(1).
 
-Domain – Holds core entities (e.g. PriorityQueueItem, QueueConfig) and business logic contracts.
-Application – Contains use cases (e.g. EnqueueCommandUseCase, DequeueCommandUseCase, InitializeQueueUseCase) orchestrating interactions between domain and infrastructure.
-Infrastructure – Implements the queue algorithms, repository, analytics collectors, and decorator factories.
-Presentation – Offers an ASP.NET Core UI (with a Setup Wizard and a Dashboard) and optional CLI for queue administration.
-Testability:
+2. **Decorator Architecture**  
+   - **Logging** – Logs each enqueue/dequeue.  
+   - **Locking** – Provides thread safety via locking.  
+   - **Lazy Deletion** – Marks items before discarding them.  
+   - **Analytics** – Records analytics data for reporting.
 
-Unit Tests – Thorough tests for each use case, queue implementation, and decorator using Moq/Fakes.
-Integration Tests – Spin up the in‑memory server and verify end‑to‑end scenarios.
-Stress Tests – Confirm performance and concurrency safety for high loads.
+3. **Configurable at Runtime**  
+   - **JSON Configuration** – A `config.json` or custom `IConfigProvider` can specify unbounded vs. bounded priorities, chosen algorithm, and decorators to apply.
 
-Final Notes
-PrioQ aims to be a flexible, modular queueing solution for .NET:
+4. **Clean Architecture**  
+   - **Domain** – Core entities (`PriorityQueueItem`, `QueueConfig`) and business logic contracts.  
+   - **Application** – Use cases (like `EnqueueCommandUseCase`, `DequeueCommandUseCase`, `InitializeQueueUseCase`) orchestrate interactions between domain and infrastructure.  
+   - **Infrastructure** – Implements queue algorithms, repository, analytics collectors, and decorator factories.  
+   - **Presentation** – An ASP.NET Core UI (with a Setup Wizard & Dashboard) and optional CLI for administration.
 
-Interchangeable algorithms for different priority range/performance needs.
-Extensible decorators for logging, analytics, concurrency, and more.
-Simple config-driven approach (JSON or custom providers).
-Clean architecture that is easy to understand, unit test, and maintain.
-Thank you for using PrioQ! We hope it simplifies your priority queue management and integrates smoothly into your .NET applications. For questions or advanced customization, check out our Issues or contact the maintainers.
+5. **Testability**  
+   - **Unit Tests** – Thorough tests for each use case, queue implementation, and decorator (using Moq/fakes).  
+   - **Integration Tests** – In-memory server for end-to-end scenarios.  
+   - **Stress Tests** – Confirms performance and concurrency safety under heavy load.
 
-Happy coding—and happy queueing!
+---
+
+## Notable Classes for Contributors
+
+The **classes most interesting** to developers extending or customizing queue behavior are located in: /Infrastructure/PriorityQueues/
+
+Here you’ll find the existing queue implementations (`HeapPriorityQueue`, `BucketPriorityQueue`, `BitmaskPriorityQueue`, `DoubleLevelBitmaskPriorityQueue`) as well as base or utility classes for building new algorithms.
+
+---
+
+## Final Notes
+
+**PrioQ** aims to be a **flexible, modular** queueing solution for .NET:
+
+- **Interchangeable algorithms** for different priority range/performance needs.
+- **Extensible decorators** for logging, analytics, concurrency, and more.
+- **Simple config-driven** approach (`config.json` or custom providers).
+- **Clean architecture** that’s easy to understand, test, and maintain.
+
+Thank you for using **PrioQ**! We hope it simplifies your priority queue management and integrates smoothly into your .NET applications. For questions or advanced customization, please check out our [Issues](#) or contact the maintainers.
+
+**Happy coding—and happy queueing!**
+

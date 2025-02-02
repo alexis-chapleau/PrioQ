@@ -8,7 +8,7 @@ namespace PrioQ.Infrastructure.PriorityQueues
     {
         private readonly List<PriorityQueueItem> _heap;
 
-        public HeapPriorityQueue(QueueConfig config)
+        public HeapPriorityQueue()
         {
             _heap = new List<PriorityQueueItem>();
         }

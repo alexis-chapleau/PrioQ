@@ -17,7 +17,7 @@ namespace PrioQ.Infrastructure.Factories
 
         public bool ShouldApply(QueueConfig config) => config.UseAnalytics;
 
-        public IPriorityQueue Apply(IPriorityQueue queue, QueueConfig config)
+        public IPriorityQueue Apply(IPriorityQueue queue)
         {
             return new AnalyticsDecorator(queue, _collector);
         }

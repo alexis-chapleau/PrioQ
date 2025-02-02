@@ -9,7 +9,7 @@ namespace PrioQ.Infrastructure.PriorityQueues
     {
         private readonly Dictionary<int, Queue<PriorityQueueItem>> _buckets;
 
-        public BucketPriorityQueue(QueueConfig config)
+        public BucketPriorityQueue()
         {
             _buckets = new Dictionary<int, Queue<PriorityQueueItem>>();
         }

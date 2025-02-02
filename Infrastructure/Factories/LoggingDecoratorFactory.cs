@@ -16,7 +16,7 @@ namespace PrioQ.Infrastructure.Factories
 
         public bool ShouldApply(QueueConfig config) => config.UseLogging;
 
-        public IPriorityQueue Apply(IPriorityQueue queue, QueueConfig config)
+        public IPriorityQueue Apply(IPriorityQueue queue)
         {
             return new LoggingDecorator(queue, _logger);
         }

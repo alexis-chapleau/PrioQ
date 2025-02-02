@@ -19,7 +19,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new BucketPriorityQueue(config);
+            IPriorityQueue queue = new BucketPriorityQueue();
 
             // Act
             var result = queue.Dequeue();
@@ -33,7 +33,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new BucketPriorityQueue(config);
+            IPriorityQueue queue = new BucketPriorityQueue();
             var item = new PriorityQueueItem(2, "TestCommand");
 
             // Act
@@ -50,7 +50,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new BucketPriorityQueue(config);
+            IPriorityQueue queue = new BucketPriorityQueue();
             // Lower numeric value means higher priority.
             var itemHigh = new PriorityQueueItem(1, "HighPriority");
             var itemMedium = new PriorityQueueItem(3, "MediumPriority");
@@ -77,7 +77,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new BucketPriorityQueue(config);
+            IPriorityQueue queue = new BucketPriorityQueue();
             var item1 = new PriorityQueueItem(2, "Command1");
             var item2 = new PriorityQueueItem(2, "Command2");
             var item3 = new PriorityQueueItem(2, "Command3");
@@ -102,7 +102,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new BucketPriorityQueue(config);
+            IPriorityQueue queue = new BucketPriorityQueue();
             var itemPriority1 = new PriorityQueueItem(1, "Priority1");
             var itemPriority3 = new PriorityQueueItem(3, "Priority3");
 

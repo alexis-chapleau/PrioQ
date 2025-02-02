@@ -26,7 +26,7 @@ namespace PrioQ.Tests.Mocks
             return _shouldApply;
         }
 
-        public IPriorityQueue Apply(IPriorityQueue queue, QueueConfig config)
+        public IPriorityQueue Apply(IPriorityQueue queue)
         {
             return new MockDecorator(queue);
         }

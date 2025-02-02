@@ -8,7 +8,7 @@ namespace PrioQ.Infrastructure.Factories
     {
         public bool ShouldApply(QueueConfig config) => config.UseLocking;
 
-        public IPriorityQueue Apply(IPriorityQueue queue, QueueConfig config)
+        public IPriorityQueue Apply(IPriorityQueue queue)
         {
             return new LockingDecorator(queue);
         }

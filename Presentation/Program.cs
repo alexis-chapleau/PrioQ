@@ -8,6 +8,7 @@ using PrioQ.Infrastructure.Configuration;
 using PrioQ.Infrastructure.Factories;
 using PrioQ.Infrastructure.Repository;
 using PrioQ.Infrastructure.Analytics;
+using PrioQ.Presentation.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,7 +58,10 @@ services.AddTransient<IInitializeQueueUseCase, InitializeQueueUseCase>();
 services.AddTransient<IAnalyticsReportUseCase, AnalyticsReportUseCase>();
 
 // Register controllers.
-services.AddControllers();
+services.AddControllers(options =>
+{
+    options.Filters.Add<DomainExceptionFilter>();
+});
 
 var app = builder.Build();
 

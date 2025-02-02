@@ -18,7 +18,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new HeapPriorityQueue(config);
+            IPriorityQueue queue = new HeapPriorityQueue();
 
             // Act
             var result = queue.Dequeue();
@@ -32,7 +32,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new HeapPriorityQueue(config);
+            IPriorityQueue queue = new HeapPriorityQueue();
             var item = new PriorityQueueItem(2, "TestCommand");
 
             // Act
@@ -49,7 +49,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new HeapPriorityQueue(config);
+            IPriorityQueue queue = new HeapPriorityQueue();
             // Lower numeric value represents higher priority.
             var itemHigh = new PriorityQueueItem(1, "HighPriority");
             var itemMedium = new PriorityQueueItem(3, "MediumPriority");
@@ -76,7 +76,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new HeapPriorityQueue(config);
+            IPriorityQueue queue = new HeapPriorityQueue();
             // Using the same priority for all items.
             var item1 = new PriorityQueueItem(2, "Command1");
             var item2 = new PriorityQueueItem(2, "Command2");
@@ -108,7 +108,7 @@ namespace Tests.UnitTests.PriorityQueues
         {
             // Arrange
             var config = GetTestConfig();
-            IPriorityQueue queue = new HeapPriorityQueue(config);
+            IPriorityQueue queue = new HeapPriorityQueue();
 
             // Enqueue a series of items in a random order.
             var items = new List<PriorityQueueItem>

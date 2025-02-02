@@ -5,5 +5,5 @@
     "UseLocking": true,
     "UseLazyDelete": false,
     "UseBitmaskOptimization": false,
-    "MaxPriority": 64
+    "MaxPriority": 10
 }

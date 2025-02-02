@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Mvc;
+using PrioQ.Application.UseCases;
 using PrioQ.Domain.Entities;
 using PrioQ.Application.Interfaces;
 
@@ -26,8 +27,15 @@ namespace PrioQ.Presentation.Controllers
         [HttpPost("enqueue")]
         public IActionResult Enqueue([FromBody] PriorityQueueItem item)
         {
-            _enqueueUseCase.Execute(item);
-            return Ok("Item enqueued.");
+            try
+            {
+                _enqueueUseCase.Execute(item);
+                return Ok("Item enqueued.");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("dequeue")]

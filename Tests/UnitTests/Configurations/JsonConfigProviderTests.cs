@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using Newtonsoft.Json;
 using PrioQ.Domain.Entities;
 using PrioQ.Infrastructure.Configuration;
@@ -24,10 +25,10 @@ namespace Tests.UnitTests.Configurations
             var expectedConfig = new QueueConfig
             {
                 UseAnalytics = true,
-                UseBucketAlgorithm = false,
                 UseLogging = true,
                 UseLazyDelete = false,
-                UseLocking = true
+                UseLocking = true,
+                Algorithm = PriorityQueueAlgorithm.Bitmask,
             };
 
             // Serialize the object to JSON and write to the temporary file.
@@ -42,7 +43,7 @@ namespace Tests.UnitTests.Configurations
             // Assert: verify that the deserialized config matches the expected values.
             Assert.NotNull(actualConfig);
             Assert.Equal(expectedConfig.UseAnalytics, actualConfig.UseAnalytics);
-            Assert.Equal(expectedConfig.UseBucketAlgorithm, actualConfig.UseBucketAlgorithm);
+            Assert.Equal(expectedConfig.Algorithm, actualConfig.Algorithm);
             Assert.Equal(expectedConfig.UseLogging, actualConfig.UseLogging);
             Assert.Equal(expectedConfig.UseLazyDelete, actualConfig.UseLazyDelete);
             Assert.Equal(expectedConfig.UseLocking, actualConfig.UseLocking);

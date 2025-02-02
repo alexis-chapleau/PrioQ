@@ -104,6 +104,38 @@ namespace Tests.UnitTests.PriorityQueues
         }
 
         [Fact]
+        public void Enqueue_SamePriority_HeapReorders_FailsWithoutFIFO()
+        {
+            // Arrange
+            HeapPriorityQueue queue = new HeapPriorityQueue();
+
+            // Items with the same priority but added in an order where heap restructuring happens
+            var item1 = new PriorityQueueItem(2, "Command1"); // Added first
+            var item2 = new PriorityQueueItem(2, "Command2"); // Added second
+            var item3 = new PriorityQueueItem(2, "Command3"); // Added third
+            var item4 = new PriorityQueueItem(2, "Command4"); // Added fourth
+
+            // Act - Insert in a way that forces heap restructuring
+            queue.Enqueue(item3); // Insert item3 first
+            queue.Enqueue(item1); // Insert item1 second
+            queue.Enqueue(item4); // Insert item4 third
+            queue.Enqueue(item2); // Insert item2 last, heap reshuffles
+
+            // Dequeue and check order
+            var dequeued1 = queue.Dequeue();
+            var dequeued2 = queue.Dequeue();
+            var dequeued3 = queue.Dequeue();
+            var dequeued4 = queue.Dequeue();
+
+            // Assert - This will FAIL without FIFO tracking
+            Assert.Equal(item3.Id, dequeued1.Id);
+            Assert.Equal(item1.Id, dequeued2.Id);
+            Assert.Equal(item4.Id, dequeued3.Id);
+            Assert.Equal(item2.Id, dequeued4.Id);
+        }
+
+
+        [Fact]
         public void HeapProperty_IsMaintained_AfterMultipleOperations()
         {
             // Arrange

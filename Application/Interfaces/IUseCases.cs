@@ -16,10 +16,12 @@ namespace PrioQ.Application.Interfaces
     public interface IInitializeQueueUseCase
     {
         void Execute();
+        void Execute(QueueConfig config);
     }
 
-    public interface IAnalyticsReportUseCase
+    public interface IGetAnalyticsReportUseCase
     {
         AnalyticsReportDto GenerateReport(DateTime from, DateTime to);
     }
+
 }

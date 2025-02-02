@@ -1,0 +1,54 @@
+﻿@model PrioQ.Application.DTOs.AnalyticsReportDto
+
+@{
+    ViewBag.Title = "Queue Dashboard";
+}
+
+<h2>Queue Dashboard</h2>
+
+<div>
+    <h3>Total Items Processed</h3>
+    <p>@Model.TotalItemsProcessed</p>
+</div>
+
+<div>
+    <h3>Average Time in Queue by Priority</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Average Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var kvp in Model.AverageTimeInQueueByPriority)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td>@kvp.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h3>Items Processed by Day of Week</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var kvp in Model.ItemsProcessedByDayOfWeek)
+            {
+                <tr>
+                    <td>@kvp.Key</td>
+                    <td>@kvp.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -15,7 +15,7 @@ namespace Tests.UnitTests.Controllers
         public void GetReport_ReturnsOkResult_WithReport()
         {
             // Arrange
-            var mockReportUseCase = new Mock<IAnalyticsReportUseCase>();
+            var mockReportUseCase = new Mock<IGetAnalyticsReportUseCase>();
 
             // Create a dummy report object using the correct DTO properties.
             var dummyReport = new AnalyticsReportDto
@@ -57,7 +57,7 @@ namespace Tests.UnitTests.Controllers
         public void GetReport_UsesDefaultDates_WhenParametersAreNull()
         {
             // Arrange
-            var mockReportUseCase = new Mock<IAnalyticsReportUseCase>();
+            var mockReportUseCase = new Mock<IGetAnalyticsReportUseCase>();
 
             var dummyReport = new AnalyticsReportDto
             {

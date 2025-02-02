@@ -1,9 +1,9 @@
 {
-    "UseBucketAlgorithm": true,
-    "UseAnalytics": true,
+    "UnboundedPriority": false,
+    "MaxPriority": 10,
     "UseLogging": true,
     "UseLocking": true,
     "UseLazyDelete": false,
-    "UseBitmaskOptimization": false,
-    "MaxPriority": 10
+    "UseAnalytics": true,
+    "Algorithm": "Bitmask"
 }

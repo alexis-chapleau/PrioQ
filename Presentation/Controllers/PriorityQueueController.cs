@@ -48,7 +48,7 @@ namespace PrioQ.Presentation.Controllers
         }
 
         [HttpPost("initialize")]
-        public IActionResult Reinitialize()
+        public IActionResult Initialize()
         {
             _initializeUseCase.Execute();
             return Ok("Queue reinitialized.");

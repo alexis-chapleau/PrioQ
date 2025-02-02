@@ -25,5 +25,10 @@ namespace PrioQ.Application.UseCases
             var newQueue = _queueFactory.CreatePriorityQueue(_config);
             _queueRepository.SetQueue(newQueue);
         }
+        public void Execute(QueueConfig config)
+        {
+            var newQueue = _queueFactory.CreatePriorityQueue(config);
+            _queueRepository.SetQueue(newQueue);
+        }
     }
 }

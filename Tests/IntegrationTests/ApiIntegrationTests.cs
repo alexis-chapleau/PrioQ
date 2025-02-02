@@ -41,6 +41,12 @@ namespace PrioQ.Tests.IntegrationTests
         public async Task Enqueue_And_Dequeue_Work_EndToEnd()
         {
             // Arrange
+            // Ensure the queue is initialized first.
+            // If you have an endpoint for initialization, call it:
+            var initUrl = "/api/priorityqueue/initialize"; // Adjust this route to match your actual endpoint.
+            var initResponse = await _client.PostAsync(initUrl, null);
+            initResponse.EnsureSuccessStatusCode();
+
             var enqueueUrl = "/api/priorityqueue/enqueue";
             var dequeueUrl = "/api/priorityqueue/dequeue";
 
@@ -49,7 +55,7 @@ namespace PrioQ.Tests.IntegrationTests
                 ""priority"": 1,
                 ""command"": ""Test EndToEnd"",
                 ""enqueuedAt"": ""2025-01-01T00:00:00Z""
-            }";
+                }";
             var content = new StringContent(sampleItemJson, Encoding.UTF8, "application/json");
 
             // Act - Enqueue the item.
@@ -62,8 +68,8 @@ namespace PrioQ.Tests.IntegrationTests
             var dequeueResponse = await _client.PostAsync(dequeueUrl, null);
             dequeueResponse.EnsureSuccessStatusCode();
             var dequeueResult = await dequeueResponse.Content.ReadAsStringAsync();
-            // Check that the dequeued result contains the command text.
             Assert.Contains("Test EndToEnd", dequeueResult);
         }
+
     }
 }

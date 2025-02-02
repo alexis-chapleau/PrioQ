@@ -4,11 +4,11 @@ using PrioQ.Application.Interfaces;
 
 namespace PrioQ.Application.UseCases
 {
-    public class AnalyticsReportUseCase : IAnalyticsReportUseCase
+    public class GetAnalyticsReportUseCase : IGetAnalyticsReportUseCase
     {
         private readonly IAnalyticsReportGenerator _reportGenerator;
 
-        public AnalyticsReportUseCase(IAnalyticsReportGenerator reportGenerator)
+        public GetAnalyticsReportUseCase(IAnalyticsReportGenerator reportGenerator)
         {
             _reportGenerator = reportGenerator;
         }

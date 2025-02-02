@@ -9,6 +9,7 @@ using PrioQ.Infrastructure.Factories;
 using PrioQ.Infrastructure.Repository;
 using PrioQ.Infrastructure.Analytics;
 using PrioQ.Presentation.Filters;
+using PrioQ.Infrastructure.Decorators; // if you still use decorators
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,7 @@ services.AddLogging(configure => configure.AddConsole());
 // Register the analytics collector as a singleton so that all data is accumulated.
 services.AddSingleton<IAnalyticsCollector, AnalyticsCollector>();
 
-// Register the report generator and also register its interface.
+// Register the report generator and its interface.
 services.AddTransient<IAnalyticsReportGenerator, AnalyticsReportGenerator>();
 
 // Register all decorator factories.
@@ -51,37 +52,38 @@ services.AddTransient<IPriorityQueueDecoratorFactory, LazyDeleteDecoratorFactory
 services.AddSingleton<IPriorityQueueFactory, PriorityQueueFactory>();
 
 // Register use cases.
-// (Assuming that these use cases now depend on interfaces or the missing services are registered.)
 services.AddTransient<IEnqueueCommandUseCase, EnqueueCommandUseCase>();
 services.AddTransient<IDequeueCommandUseCase, DequeueCommandUseCase>();
 services.AddTransient<IInitializeQueueUseCase, InitializeQueueUseCase>();
-services.AddTransient<IAnalyticsReportUseCase, AnalyticsReportUseCase>();
+services.AddTransient<IGetAnalyticsReportUseCase, GetAnalyticsReportUseCase>();
 
-// Register controllers.
-services.AddControllers(options =>
+// Register controllers with views and add the global exception filter.
+services.AddControllers();
+services.AddControllersWithViews(options =>
 {
     options.Filters.Add<DomainExceptionFilter>();
 });
 
 var app = builder.Build();
 
-// Initialize the queue and store it in the repository.
-using (var scope = app.Services.CreateScope())
-{
-    var provider = scope.ServiceProvider;
-    var configProvider = provider.GetRequiredService<IConfigProvider>();
-    QueueConfig config = configProvider.GetQueueConfig();
-    var factory = provider.GetRequiredService<IPriorityQueueFactory>();
-    var queue = factory.CreatePriorityQueue(config);
-    var repo = provider.GetRequiredService<IQueueRepository>();
-    repo.SetQueue(queue);
-}
+ using (var scope = app.Services.CreateScope())
+    {
+        var provider = scope.ServiceProvider;
+        var configProvider = provider.GetRequiredService<IConfigProvider>();
+        QueueConfig config = configProvider.GetQueueConfig();
+        var factory = provider.GetRequiredService<IPriorityQueueFactory>();
+        var queue = factory.CreatePriorityQueue(config);
+        var repo = provider.GetRequiredService<IQueueRepository>();
+        repo.SetQueue(queue);
+    }
+
 
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.MapControllers();
+// Map default route so that the default controller is Setup (for the setup wizard) and action is Index.
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Setup}/{action=Index}/{id?}");
 
 app.Run();
 

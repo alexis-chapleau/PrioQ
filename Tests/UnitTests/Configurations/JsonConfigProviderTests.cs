@@ -16,6 +16,13 @@ namespace Tests.UnitTests.Configurations
         {
             // Create a temporary file path for testing.
             _tempFilePath = Path.GetTempFileName();
+
+            // Copy the content of Presentation/config.json to the temporary file.
+            string configFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Presentation", "config.json");
+            if (File.Exists(configFilePath))
+            {
+                File.Copy(configFilePath, _tempFilePath, true);
+            }
         }
 
         [Fact]

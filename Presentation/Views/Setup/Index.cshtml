@@ -1,0 +1,39 @@
+@model PrioQ.UI.Models.SetupViewModel
+
+<h2>Queue Setup Wizard</h2>
+<form asp-action="Index" method="post">
+    <div>
+        <label>Unbounded Priority:</label>
+        <input asp-for="UnboundedPriority" type="checkbox" />
+    </div>
+    <div>
+        <label>Max Priority:</label>
+        <input asp-for="MaxPriority" type="number" />
+    </div>
+    <div>
+        <label>Algorithm:</label>
+        <select asp-for="Algorithm">
+            <option>NormalBuckets</option>
+            <option>Bitmask</option>
+            <option>DoubleBitmask</option>
+            <option>Heap</option>
+        </select>
+    </div>
+    <div>
+        <label>Use Logging:</label>
+        <input asp-for="UseLogging" type="checkbox" />
+    </div>
+    <div>
+        <label>Use Locking:</label>
+        <input asp-for="UseLocking" type="checkbox" />
+    </div>
+    <div>
+        <label>Use Lazy Delete:</label>
+        <input asp-for="UseLazyDelete" type="checkbox" />
+    </div>
+    <div>
+        <label>Use Analytics:</label>
+        <input asp-for="UseAnalytics" type="checkbox" />
+    </div>
+    <button type="submit">Create Queue</button>
+</form>

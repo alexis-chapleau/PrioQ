@@ -1,0 +1,18 @@
+﻿@model PrioQ.Domain.Entities.PriorityQueueItem
+@{
+    ViewBag.Title = "Dequeue Command";
+}
+<h2>Dequeue Command</h2>
+@if (Model != null)
+{
+    <div>
+        <p>Priority: @Model.Priority</p>
+        <p>Command: @Model.Command</p>
+        <p>Enqueued At: @Model.EnqueuedAt</p>
+    </div>
+}
+else
+{
+    <p>The queue is empty.</p>
+}
+<a asp-controller="Command" asp-action="Dequeue">Refresh</a>

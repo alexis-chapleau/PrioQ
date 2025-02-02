@@ -47,7 +47,7 @@ namespace PrioQ.Tests.UnitTests
             services.AddTransient<EnqueueCommandUseCase>();
             services.AddTransient<DequeueCommandUseCase>();
             services.AddTransient<InitializeQueueUseCase>();
-            services.AddTransient<AnalyticsReportUseCase>();
+            services.AddTransient<GetAnalyticsReportUseCase>();
             services.AddControllers();
 
             var app = builder.Build();
@@ -61,7 +61,7 @@ namespace PrioQ.Tests.UnitTests
             Assert.NotNull(sp.GetService<EnqueueCommandUseCase>());
             Assert.NotNull(sp.GetService<DequeueCommandUseCase>());
             Assert.NotNull(sp.GetService<InitializeQueueUseCase>());
-            Assert.NotNull(sp.GetService<AnalyticsReportUseCase>());
+            Assert.NotNull(sp.GetService<GetAnalyticsReportUseCase>());
         }
     }
 }

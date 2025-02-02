@@ -101,7 +101,7 @@ namespace Tests.UnitTests.Controllers
                 mockInitializeUseCase.Object);
 
             // Act
-            var result = controller.Reinitialize();
+            var result = controller.Initialize();
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);

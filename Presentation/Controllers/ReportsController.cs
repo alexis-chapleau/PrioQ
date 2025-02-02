@@ -9,9 +9,9 @@ namespace PrioQ.Presentation.Controllers
     [Route("api/[controller]")]
     public class ReportsController : ControllerBase
     {
-        private readonly IAnalyticsReportUseCase _reportUseCase;
+        private readonly IGetAnalyticsReportUseCase _reportUseCase;
 
-        public ReportsController(IAnalyticsReportUseCase reportUseCase)
+        public ReportsController(IGetAnalyticsReportUseCase reportUseCase)
         {
             _reportUseCase = reportUseCase;
         }

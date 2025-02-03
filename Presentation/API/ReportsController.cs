@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PrioQ.Application.Interfaces; // Contains AnalyticsReportUseCase
 
-namespace PrioQ.Presentation.Controllers
+namespace PrioQ.Presentation.API
 {
     [ApiController]
     [Route("api/[controller]")]

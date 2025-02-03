@@ -1,54 +1,151 @@
 ﻿@model PrioQ.Application.DTOs.AnalyticsReportDto
+@using System.Globalization
 
 @{
-    ViewBag.Title = "Queue Dashboard";
+    var serverInfo = Context.Request.Host.ToString();
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // Retrieve the 'from' and 'to' parameters from the query string or use defaults.
+    DateTime reportFrom = DateTime.TryParse(Context.Request.Query["from"], out DateTime fromDate)
+                            ? fromDate : DateTime.UtcNow.AddDays(-7);
+    DateTime reportTo = DateTime.TryParse(Context.Request.Query["to"], out DateTime toDate)
+                          ? toDate : DateTime.UtcNow;
 }
 
-<h2>Queue Dashboard</h2>
+<div class="container my-4">
+    <h2 class="mb-4">Queue Dashboard</h2>
 
-<div>
-    <h3>Total Items Processed</h3>
-    <p>@Model.TotalItemsProcessed</p>
+    <!-- Date Range Form -->
+    <form method="get" asp-controller="Dashboard" asp-action="Index" class="row g-3 mb-5">
+        <div class="col-md-4">
+            <label for="from" class="form-label">Start Date</label>
+            <input type="datetime-local" id="from" name="from" class="form-control"
+                   value="@reportFrom.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture)" />
+        </div>
+        <div class="col-md-4">
+            <label for="to" class="form-label">End Date</label>
+            <input type="datetime-local" id="to" name="to" class="form-control"
+                   value="@reportTo.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture)" />
+        </div>
+        <div class="col-md-4 align-self-end">
+            <button type="submit" class="btn btn-primary">Generate Report</button>
+        </div>
+    </form>
+
+    <!-- Report Overview -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Total Items Processed
+                </div>
+                <div class="card-body">
+                    <h3>@Model.TotalItemsProcessed</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Tables -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">Average Time in Queue by Priority</div>
+                <div class="card-body p-0">
+                    <table class="table table-striped m-0">
+                        <thead>
+                            <tr>
+                                <th>Priority</th>
+                                <th>Average Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var kvp in Model.AverageTimeInQueueByPriority)
+                            {
+                                <tr>
+                                    <td>@kvp.Key</td>
+                                    <td>@kvp.Value.TotalSeconds seconds</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">Items Processed by Day of Week</div>
+                <div class="card-body p-0">
+                    <table class="table table-striped m-0">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var kvp in Model.ItemsProcessedByDayOfWeek)
+                            {
+                                <tr>
+                                    <td>@kvp.Key</td>
+                                    <td>@kvp.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphical Representation -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Items Processed by Day of Week (Chart)</div>
+                <div class="card-body">
+                    <canvas id="dayChart" width="400" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    <h3>Average Time in Queue by Priority</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Priority</th>
-                <th>Average Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var kvp in Model.AverageTimeInQueueByPriority)
-            {
-                <tr>
-                    <td>@kvp.Key</td>
-                    <td>@kvp.Value</td>
-                </tr>
+@section Scripts {
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Prepare data for the chart:
+        var dayLabels = [];
+        var dayCounts = [];
+        @foreach (var kvp in Model.ItemsProcessedByDayOfWeek)
+        {
+            @:dayLabels.push("@kvp.Key");
+            @:dayCounts.push(@kvp.Value);
+        }
+        var ctx = document.getElementById('dayChart').getContext('2d');
+        var dayChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: dayLabels,
+                datasets: [{
+                    label: 'Items Processed',
+                    data: dayCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
             }
-        </tbody>
-    </table>
-</div>
-
-<div>
-    <h3>Items Processed by Day of Week</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Day</th>
-                <th>Count</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var kvp in Model.ItemsProcessedByDayOfWeek)
-            {
-                <tr>
-                    <td>@kvp.Key</td>
-                    <td>@kvp.Value</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        });
+    </script>
+}

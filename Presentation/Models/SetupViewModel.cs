@@ -12,5 +12,11 @@ namespace PrioQ.UI.Models
         public bool UseLocking { get; set; }
         public bool UseLazyDelete { get; set; }
         public bool UseAnalytics { get; set; }
+
+        // New properties for UI feedback
+        public bool QueueIsRunning { get; set; }
+        public string QueueServerInfo { get; set; }
+        public string QueueWarningMessage { get; set; }
+    
     }
 }

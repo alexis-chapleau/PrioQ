@@ -1,68 +1,66 @@
 @model PrioQ.UI.Models.SetupViewModel
+@using PrioQ.Domain.Entities
 
-<h2>Queue Setup Wizard (Plain HTML)</h2>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
 
-<form action="/Setup/Index" method="post">
-    <!-- For checkboxes, we must handle them carefully:
-         If we want to send 'true' or 'false' for the property, we do this pattern: -->
-    <div>
-        <label>Unbounded Priority:</label>
-        <input type="checkbox"
-               name="UnboundedPriority"
-               value="false"
-        @(Model.UnboundedPriority ? "checked" : "") />
+@if (Model.QueueIsRunning)
+{
+    <div class="alert alert-warning">
+        <strong>Warning:</strong> A queue is currently running on @Model.QueueServerInfo.
+        <br />
+        @Model.QueueWarningMessage
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No queue is currently running.
+    </div>
+}
+
+<form asp-action="Index" method="post">
+    <div class="mb-3">
+        <label class="form-label">Unbounded Priority:</label>
+        <input type="checkbox" name="UnboundedPriority" value="true" @(Model.UnboundedPriority ? "checked" : "") />
     </div>
 
-    <div>
-        <label>Max Priority:</label>
-        <input type="number"
-               name="MaxPriority"
-               value="@Model.MaxPriority" />
+    <div class="mb-3">
+        <label class="form-label">Max Priority:</label>
+        <input type="number" name="MaxPriority" value="@Model.MaxPriority" class="form-control" />
     </div>
 
-    <div>
-        <label>Algorithm:</label>
-        <select name="Algorithm">
-            <!-- Manually set "selected" if this matches Model.Algorithm -->
-            <option value="NormalBuckets" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.NormalBuckets ? "selected" : "")>NormalBuckets</option>
-            <option value="Bitmask" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.Bitmask ? "selected" : "")>Bitmask</option>
-            <option value="DoubleBitmask" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.DoubleBitmask ? "selected" : "")>DoubleBitmask</option>
-            <option value="Heap" @(Model.Algorithm == PrioQ.Domain.Entities.PriorityQueueAlgorithm.Heap ? "selected" : "")>Heap</option>
+    <div class="mb-3">
+        <label class="form-label">Algorithm:</label>
+        <select name="Algorithm" class="form-select">
+            <option value="NormalBuckets" @(Model.Algorithm == PriorityQueueAlgorithm.NormalBuckets ? "selected" : "")>NormalBuckets</option>
+            <option value="Bitmask" @(Model.Algorithm == PriorityQueueAlgorithm.Bitmask ? "selected" : "")>Bitmask</option>
+            <option value="DoubleBitmask" @(Model.Algorithm == PriorityQueueAlgorithm.DoubleBitmask ? "selected" : "")>DoubleBitmask</option>
+            <option value="Heap" @(Model.Algorithm == PriorityQueueAlgorithm.Heap ? "selected" : "")>Heap</option>
         </select>
     </div>
 
-    <div>
-        <label>Use Logging:</label>
-        <input type="checkbox"
-               name="UseLogging"
-               value="true"
-        @(Model.UseLogging ? "checked" : "") />
+    <div class="mb-3">
+        <label class="form-label">Use Logging:</label>
+        <input type="checkbox" name="UseLogging" value="true" @(Model.UseLogging ? "checked" : "") />
     </div>
 
-    <div>
-        <label>Use Locking:</label>
-        <input type="checkbox"
-               name="UseLocking"
-               value="true"
-        @(Model.UseLocking ? "checked" : "") />
+    <div class="mb-3">
+        <label class="form-label">Use Locking:</label>
+        <input type="checkbox" name="UseLocking" value="true" @(Model.UseLocking ? "checked" : "") />
     </div>
 
-    <div>
-        <label>Use Lazy Delete:</label>
-        <input type="checkbox"
-               name="UseLazyDelete"
-               value="true"
-        @(Model.UseLazyDelete ? "checked" : "") />
+    <div class="mb-3">
+        <label class="form-label">Use Lazy Delete:</label>
+        <input type="checkbox" name="UseLazyDelete" value="true" @(Model.UseLazyDelete ? "checked" : "") />
     </div>
 
-    <div>
-        <label>Use Analytics:</label>
-        <input type="checkbox"
-               name="UseAnalytics"
-               value="true"
-        @(Model.UseAnalytics ? "checked" : "") />
+    <div class="mb-3">
+        <label class="form-label">Use Analytics:</label>
+        <input type="checkbox" name="UseAnalytics" value="true" @(Model.UseAnalytics ? "checked" : "") />
     </div>
 
-    <button type="submit">Create Queue</button>
+    <button type="submit" class="btn btn-primary">Create/Replace Queue</button>
 </form>

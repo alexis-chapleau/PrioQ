@@ -17,42 +17,43 @@ namespace PrioQ.UI.Controllers
             _dequeueUseCase = dequeueUseCase;
         }
 
-        // GET: /Command/Enqueue
-        public IActionResult Enqueue()
+        // GET: /Command/Manage
+        public IActionResult Manage()
         {
-            return View(new CommandViewModel());
+            // Initialize the view model as needed.
+            var model = new CommandViewModel();
+            return View("CommandManagement", model);
         }
 
-        // POST: /Command/Enqueue
+        // GET: /Command/DequeueAjax
+        [HttpGet]
+        public IActionResult DequeueAjax()
+        {
+            var item = _dequeueUseCase.Execute();
+            // Return a partial view that renders the dequeued command.
+            return PartialView("_DequeuePartial", item);
+        }
+
         [HttpPost]
         public IActionResult Enqueue(CommandViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return Content("Invalid input.");
             }
 
             try
             {
                 var item = new PriorityQueueItem(model.Priority, model.CommandText);
-
                 _enqueueUseCase.Execute(item);
-                TempData["Message"] = "Command enqueued successfully.";
-                return RedirectToAction("Enqueue");
+                return Content("Command enqueued successfully.");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
-                return View(model);
+                return Content("Error: " + ex.Message);
             }
         }
 
-        // GET: /Command/Dequeue
-        public IActionResult Dequeue()
-        {
-            // Simply call the use case and pass the result to the view.
-            var item = _dequeueUseCase.Execute();
-            return View(item);
-        }
+
     }
 }

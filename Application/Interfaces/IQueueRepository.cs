@@ -6,5 +6,7 @@ namespace PrioQ.Application.Interfaces
     {
         BasePriorityQueue GetQueue();
         void SetQueue(BasePriorityQueue queue);
+
+        bool HasQueue();
     }
 }

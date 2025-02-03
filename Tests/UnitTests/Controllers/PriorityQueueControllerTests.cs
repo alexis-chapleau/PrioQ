@@ -4,7 +4,7 @@ using Moq;
 using Microsoft.AspNetCore.Mvc;
 using PrioQ.Domain.Entities;
 using PrioQ.Application.Interfaces;
-using PrioQ.Presentation.Controllers;
+using PrioQ.Presentation.API;
 
 namespace Tests.UnitTests.Controllers
 {

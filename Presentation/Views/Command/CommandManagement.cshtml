@@ -1,0 +1,75 @@
+@model PrioQ.UI.Models.CommandViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Command Management";
+}
+
+<div class="container my-4">
+    <div class="row">
+        <!-- Enqueue Section -->
+        <div class="col-md-6">
+            <h2>Enqueue Command</h2>
+            <!-- Enqueue message box -->
+            <div id="enqueueMessage" class="mb-3"></div>
+            <form id="enqueueForm" asp-controller="Command" asp-action="Enqueue" method="post">
+                <div class="mb-3">
+                    <label for="Priority" class="form-label">Priority</label>
+                    <input type="number" class="form-control" id="Priority" name="Priority" value="@Model.Priority" />
+                </div>
+                <div class="mb-3">
+                    <label for="CommandText" class="form-label">Command</label>
+                    <input type="text" class="form-control" id="CommandText" name="CommandText" value="@Model.CommandText" />
+                </div>
+                <button type="submit" class="btn btn-secondary">Enqueue</button>
+            </form>
+        </div>
+
+        <!-- Dequeue Section -->
+        <div class="col-md-6">
+            <h2>Dequeue Command</h2>
+            <button id="dequeueButton" class="btn btn-secondary mb-3">Dequeue</button>
+            <div id="dequeueResult" class="border p-3">
+                <!-- The dequeued command (if any) will be displayed here -->
+                <p>No command has been dequeued yet.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Dequeue logic remains the same:
+        document.getElementById("dequeueButton").addEventListener("click", function (e) {
+            e.preventDefault();
+            fetch('/Command/DequeueAjax')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("dequeueResult").innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error during dequeue:', error);
+                });
+        });
+
+        // Enqueue logic using form submission with fetch and FormData
+        document.getElementById("enqueueForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            // Build FormData object from the form.
+            var formData = new FormData(this);
+            fetch('/Command/Enqueue', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Assume the endpoint returns a small HTML fragment/message.
+                document.getElementById("enqueueMessage").innerHTML = html;
+                // Optionally clear the form or update UI as needed.
+            })
+            .catch(error => {
+                console.error('Error during enqueue:', error);
+            });
+        });
+    </script>
+}

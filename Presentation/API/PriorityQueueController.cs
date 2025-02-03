@@ -4,7 +4,7 @@ using PrioQ.Application.UseCases;
 using PrioQ.Domain.Entities;
 using PrioQ.Application.Interfaces;
 
-namespace PrioQ.Presentation.Controllers
+namespace PrioQ.Presentation.API
 {
     [ApiController]
     [Route("api/[controller]")]

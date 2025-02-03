@@ -49,7 +49,7 @@ services.AddTransient<IPriorityQueueDecoratorFactory, LockingDecoratorFactory>()
 services.AddTransient<IPriorityQueueDecoratorFactory, LazyDeleteDecoratorFactory>();
 
 // Register the PriorityQueueFactory.
-services.AddSingleton<BasePriorityQueueFactory, PriorityQueueFactory>();
+services.AddSingleton<IPriorityQueueFactory, PriorityQueueFactory>();
 
 // Register use cases.
 services.AddTransient<IEnqueueCommandUseCase, EnqueueCommandUseCase>();
@@ -73,7 +73,7 @@ if (builder.Environment.IsEnvironment("Testing"))
         var provider = scope.ServiceProvider;
         var configProvider = provider.GetRequiredService<IConfigProvider>();
         QueueConfig config = configProvider.GetQueueConfig();
-        var factory = provider.GetRequiredService<BasePriorityQueueFactory>();
+        var factory = provider.GetRequiredService<IPriorityQueueFactory>();
         var queue = factory.CreatePriorityQueue(config);
         var repo = provider.GetRequiredService<IQueueRepository>();
         repo.SetQueue(queue);

@@ -43,7 +43,7 @@ namespace PrioQ.Tests.UnitTests
             services.AddTransient<IPriorityQueueDecoratorFactory, LoggingDecoratorFactory>();
             services.AddTransient<IPriorityQueueDecoratorFactory, LockingDecoratorFactory>();
             services.AddTransient<IPriorityQueueDecoratorFactory, LazyDeleteDecoratorFactory>();
-            services.AddSingleton<BasePriorityQueueFactory, PriorityQueueFactory>();
+            services.AddSingleton<IPriorityQueueFactory, PriorityQueueFactory>();
             services.AddTransient<EnqueueCommandUseCase>();
             services.AddTransient<DequeueCommandUseCase>();
             services.AddTransient<InitializeQueueUseCase>();
@@ -57,7 +57,7 @@ namespace PrioQ.Tests.UnitTests
             Assert.NotNull(sp.GetService<IConfigProvider>());
             Assert.NotNull(sp.GetService<IQueueRepository>());
             Assert.NotNull(sp.GetService<IAnalyticsCollector>());
-            Assert.NotNull(sp.GetService<BasePriorityQueueFactory>());
+            Assert.NotNull(sp.GetService<IPriorityQueueFactory>());
             Assert.NotNull(sp.GetService<EnqueueCommandUseCase>());
             Assert.NotNull(sp.GetService<DequeueCommandUseCase>());
             Assert.NotNull(sp.GetService<InitializeQueueUseCase>());

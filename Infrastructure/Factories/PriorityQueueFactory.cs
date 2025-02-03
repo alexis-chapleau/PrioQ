@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using PrioQ.Domain.Entities;
+using PrioQ.Application.Interfaces;
 using PrioQ.Infrastructure.PriorityQueues;
-
 
 namespace PrioQ.Infrastructure.Factories
 {
-    public class PriorityQueueFactory : BasePriorityQueueFactory
+    public class PriorityQueueFactory : IPriorityQueueFactory
     {
         private readonly IEnumerable<IPriorityQueueDecoratorFactory> _decoratorFactories;
 
@@ -18,50 +18,80 @@ namespace PrioQ.Infrastructure.Factories
         {
             BasePriorityQueue queue;
 
-            // If the queue is unbounded, we fall back to the heap.
+            // For unbounded priority, fall back to heap (which always uses locking).
             if (config.UnboundedPriority)
             {
                 queue = new HeapPriorityQueue();
             }
             else
             {
-                // Choose based on the algorithm and the maximum priority.
+                // Choose based on algorithm and maximum priority.
                 switch (config.Algorithm)
                 {
                     case PriorityQueueAlgorithm.Bitmask:
                         if (config.MaxPriority <= 64)
-                            queue = new BitmaskPriorityQueue();
+                        {
+                            if (config.UseLocking)
+                                queue = new BitmaskPriorityQueue();  // locked version
+                            else
+                                queue = new ConcurrentBitmaskPriorityQueue(); // concurrent version
+                        }
                         else
-                            // If user selects bitmask but the range is too high, fall back.
-                            queue = new BucketPriorityQueue();
+                        {
+                            // Fall back if range is too high.
+                            if (config.UseLocking)
+                                queue = new BucketPriorityQueue();
+                            else
+                                queue = new ConcurrentBucketPriorityQueue();
+                        }
                         break;
 
                     case PriorityQueueAlgorithm.DoubleBitmask:
                         if (config.MaxPriority <= 256)
-                            queue = new DoubleLevelBitmaskPriorityQueue();
+                        {
+                            if (config.UseLocking)
+                                queue = new DoubleLevelBitmaskPriorityQueue(); // locked version
+                            else
+                                queue = new ConcurrentDoubleLevelBitmaskPriorityQueue(); // concurrent version
+                        }
                         else
-                            queue = new BucketPriorityQueue();
+                        {
+                            if (config.UseLocking)
+                                queue = new BucketPriorityQueue();
+                            else
+                                queue = new ConcurrentBucketPriorityQueue();
+                        }
                         break;
 
                     case PriorityQueueAlgorithm.NormalBuckets:
-                        queue = new BucketPriorityQueue();
+                        if (config.UseLocking)
+                            queue = new BucketPriorityQueue();
+                        else
+                            queue = new ConcurrentBucketPriorityQueue();
                         break;
 
                     case PriorityQueueAlgorithm.Heap:
                     default:
+                        // Heap always uses locking.
                         queue = new HeapPriorityQueue();
                         break;
                 }
             }
 
-            // Apply decorators (if any).
+            if (queue is HeapPriorityQueue)
+            {
+                Console.Write("HeapPriorityQueue always uses locking; overriding config.UseLocking.");
+                config.UseLocking = true;
+            }
+
+            // Apply any decorators.
             foreach (var decoratorFactory in _decoratorFactories)
             {
                 if (decoratorFactory.ShouldApply(config))
                     queue = decoratorFactory.Apply(queue);
             }
 
-            // Map all attributes of the config object to the queue.
+            // Map all config attributes to the queue.
             queue.UseLogging = config.UseLogging;
             queue.UseLocking = config.UseLocking;
             queue.UseLazyDelete = config.UseLazyDelete;

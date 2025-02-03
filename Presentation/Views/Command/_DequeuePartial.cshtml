@@ -1,0 +1,14 @@
+@model PrioQ.Domain.Entities.PriorityQueueItem
+
+@if (Model != null)
+{
+    <div>
+        <p><strong>Priority:</strong> @Model.Priority</p>
+        <p><strong>Command:</strong> @Model.Command</p>
+        <p><strong>Enqueued At:</strong> @Model.EnqueuedAt</p>
+    </div>
+}
+else
+{
+    <p>The queue is empty.</p>
+}

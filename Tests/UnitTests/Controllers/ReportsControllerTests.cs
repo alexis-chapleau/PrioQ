@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Xunit;
 using Moq;
 using Microsoft.AspNetCore.Mvc;
-using PrioQ.Presentation.Controllers;
+using PrioQ.Presentation.API;
 using PrioQ.Application.Interfaces;
 using PrioQ.Application.DTOs;
 

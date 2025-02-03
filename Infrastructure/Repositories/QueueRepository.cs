@@ -7,22 +7,22 @@ namespace PrioQ.Infrastructure.Repository
     public class QueueRepository : IQueueRepository
     {
         private BasePriorityQueue _queue;
-        private readonly object _lockObj = new object();
+        private bool _hasQueue = false;
 
         public BasePriorityQueue GetQueue()
-        {
-            lock (_lockObj)
-            {
-                return _queue;
-            }
+        {            
+            return _queue;
         }
 
         public void SetQueue(BasePriorityQueue queue)
         {
-            lock (_lockObj)
-            {
-                _queue = queue;
-            }
+            _queue = queue;
+            _hasQueue = true;
+        }
+
+        public bool HasQueue()
+        {
+            return _hasQueue;
         }
     }
 }

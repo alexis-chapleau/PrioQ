@@ -4,7 +4,7 @@ namespace PrioQ.Domain.Entities
 {
     public class PriorityQueueItem
     {
-        public Guid Id { get; }
+        public Guid Id { get; private set; } 
         public int Priority { get; set; }
 
         public long InsertionOrder { get; set; }

@@ -1,6 +1,6 @@
 {
     "UnboundedPriority": false,
-    "MaxPriority": 10,
+    "MaxPriority": 64,
     "UseLogging": true,
     "UseLocking": true,
     "UseLazyDelete": true,

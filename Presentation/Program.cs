@@ -82,10 +82,13 @@ if (builder.Environment.IsEnvironment("Testing"))
 }
 
 app.UseRouting();
+app.UseStaticFiles(); // Enables serving files from wwwroot/
+app.UseAuthorization();
+
 app.MapControllers();  // For attribute-routed controllers, if needed
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Setup}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
 

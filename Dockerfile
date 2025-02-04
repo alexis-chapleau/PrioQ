@@ -1,10 +1,9 @@
 # Base runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-preview AS base
 WORKDIR /app
 EXPOSE 80
 
-# Build image (with SDK)
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0-preview AS build
 WORKDIR /repo
 
 # Copy everything from the repo into /repo
@@ -20,7 +19,7 @@ RUN dotnet restore
 RUN dotnet build -c Release --no-restore
 
 # 3) Publish to a folder
-RUN dotnet publish -c Release -o /app/publish --no-build
+RUN dotnet publish -c Release -o /app/publish --no-build --property:PublishDir=/app/publish
 
 # Final stage: produce a runtime image
 FROM base AS final

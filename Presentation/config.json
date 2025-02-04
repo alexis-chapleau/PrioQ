@@ -2,7 +2,7 @@
     "UnboundedPriority": false,
     "MaxPriority": 64,
     "UseLogging": true,
-    "UseLocking": true,
+    "UseLocking": false,
     "UseLazyDelete": true,
     "UseAnalytics": true,
     "Algorithm": "Bitmask"
